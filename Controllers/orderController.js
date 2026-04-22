@@ -1,4 +1,4 @@
-const Order = require('../Models/orderMode')
+const Order = require("../Models/orderMode");
 
 exports.createOrder = async (req, res) => {
   try {
@@ -44,8 +44,11 @@ exports.createOrder = async (req, res) => {
     }, 0);
 
     const order = new Order({
-      products: cart.map(item => ({
+      products: cart.map((item) => ({
         productId: item._id,
+        title: item.title,
+        price: item.price,
+        image: item.image,
         quantity: item.quantity,
       })),
       totalAmount,
@@ -62,9 +65,19 @@ exports.createOrder = async (req, res) => {
       message: "Order Created Successfully",
       order: savedOrder,
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error fetching orders" });
   }
 };

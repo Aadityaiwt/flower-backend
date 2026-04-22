@@ -32,9 +32,13 @@ app.use('/api', adminRoutes);
 const orderRoute = require('./Routes/orderRoute')
 app.use('/api', orderRoute);
 
+const contactRoute = require("./Routes/contactRoute")
+app.use("/api", contactRoute)
 
-
+const orderRoutes = require("./Routes/orderRoute");
+app.use("/api", orderRoutes);
 
 app.listen(3000, ()=>{
     console.log("Server is running");
 })
+
