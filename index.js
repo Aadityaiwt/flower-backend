@@ -1,44 +1,30 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const dotenv = require('dotenv')
-const cors = require('cors')
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const cors = require('cors');
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
+const app = express();
 
-app.use(cors())
-
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 mongoose.connect(process.env.mongodbUrl)
-.then(() => console.log("MongoDb is connected"))
-.catch((er) => {console.log("Mongo Error")})
-
-
+.then(() => console.log("MongoDB connected"))
+.catch(() => console.log("Mongo error"));
 
 app.get('/', (req, res) => {
-    res.send("Hello I am commig from node js")
-})
+    res.send("Hello from Node JS");
+});
 
-const productRoutes = require('./Routes/productRoutes')
-app.use('/api', productRoutes)
+// Routes
+app.use('/api', require('./Routes/productRoutes'));
+app.use('/api', require('./Routes/adminRoutes'));
+app.use('/api', require('./Routes/orderRoute'));
+app.use('/api', require('./Routes/contactRoute'));
+app.use('/api', require('./Routes/authRoute')); // ?? check name
 
-
-const adminRoutes = require('./Routes/adminRoutes')
-app.use('/api', adminRoutes);
-
-
-const orderRoute = require('./Routes/orderRoute')
-app.use('/api', orderRoute);
-
-const contactRoute = require("./Routes/contactRoute")
-app.use("/api", contactRoute)
-
-const orderRoutes = require("./Routes/orderRoute");
-app.use("/api", orderRoutes);
-
-app.listen(3000, ()=>{
-    console.log("Server is running");
-})
-
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
+});
